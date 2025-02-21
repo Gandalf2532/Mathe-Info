@@ -132,7 +132,6 @@
         let maxy;
         let achsengruppe = document.getElementById("Achsengruppe");
         let eingabefürinputs = document.getElementById("eingabe-werte"); //Mir fallen keine Namen mehr ein
-        let mengeinputs = eingabefürinputs.value;
 
         function inputserstellen(){
             //erstellt die inputs in der x-Reihe. Menge abhängig des Inputfeldes mit der id=eingabe-wert
@@ -141,7 +140,7 @@
             var th = document.createElement("th");
             th.innerText = "X-Wert"; //schreibt den th neu
             xReihe.appendChild(th);
-            for(let i = 0; i<mengeinputs; i++){
+            for(let i = 0; i<eingabefürinputs.value; i++){
                 let input = document.createElement("input");
                 input.type = "number";
                 input.className = "eingabe";
@@ -279,7 +278,7 @@
             console.log(`minx: ${minx}, maxx: ${maxx}, miny: ${miny}, maxy: ${maxy}`);
         }
         eingabefürinputs.addEventListener('change', inputserstellen);
-        //inputserstellen();
+        inputserstellen();
     </script>
 </body>
 </html>

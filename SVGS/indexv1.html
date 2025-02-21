@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVG & JS</title>
+    <style>
+        svg{
+            background-color: rgb(252, 252, 252);
+        }
+        .gitterlinie{
+            stroke:rgb(141, 141, 141);
+            stroke-width: 1;
+        }
+        table {
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 5px;
+            text-align: center;
+        }
+        .punkt{
+            fill:red;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <tbody>
+            <tr id="x-Reihe">
+                <th>x</th>
+                <td>-5</td>
+                <td>-4</td>
+                <td>-3</td>
+                <td>-2</td>
+                <td>-1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>4</td>
+                <td>5</td>
+            </tr>
+            <tr id="y-Reihe">
+                <th>y</th>
+            </tr>
+        </tbody>
+    </table>
+    <svg id="svg1" width="1000" height="1000" viewbox="-100 -100 100 100" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
+                <path class="gitterlinie" d="M 50 0 L 0 0 0 50" fill="none"/>
+            </pattern>
+        </defs>
+        <rect class="gitterlinie" x="-100" y="-100" width="100%" height="100%" fill="url(#grid)"/>
+        <g id="Punkte">
+
+        </g>
+    </svg>
+    <script>
+        let row = document.getElementById("x-Reihe");
+        let zellen = row.getElementsByTagName("td");
+        let yReihe = document.getElementById("y-Reihe");
+        let svgpunkte = document.getElementById("Punkte");
+        let svgele = document.getElementById("svg1")
+        let svgviewbox = svgele.viewBox.baseVal
+        let funktionswerte = [];
+        var allpunktex = [];
+        var allpunktey = [];
+        for(let i=0;i<zellen.length;i++){
+            let xwert = Number(zellen[i].innerHTML);
+            console.log(xwert);
+            let ywert = 0.5*xwert**2-2*xwert-4;
+            funktionswerte[i] = ywert;
+            let td = document.createElement("td");
+            td.innerText  = ywert;
+            yReihe.appendChild(td);
+
+            let punktx  = xwert * 50;
+            let punkty  = -ywert * 50;
+            allpunktex[i] = punktx;
+            allpunktey[i] = punkty;
+            console.log(punktx)
+
+            let punkt = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            punkt.setAttribute("cx", punktx);
+            punkt.setAttribute("cy", punkty);
+            punkt.setAttribute("r", 10);
+            punkt.setAttribute("class", "punkt");
+            svgpunkte.appendChild(punkt);
+        }
+        let minx = Math.min(...allpunktex);
+        let maxx = Math.max(...allpunktex);
+        let miny = Math.min(...allpunktey);
+        let maxy = Math.max(...allpunktey);
+        svgviewbox.x = minx;
+        svgviewbox.width = maxx;
+        svgviewbox.y = miny;
+        svgviewbox.height = maxy;
+        console.log("Viewx", svgviewbox.x)
+        console.log("Minx", minx)
+        console.log("Viewy", svgviewbox.y)
+        console.log("Miny", miny)
+        console.log("Height", svgviewbox.height)
+    </script>
+</body>
+</html>

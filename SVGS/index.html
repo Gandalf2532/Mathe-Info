@@ -164,10 +164,12 @@
             }
         }
         function zeichne(){
+            //alte Sachen clearen
             achsengruppe.innerHTML = "";
             Beschriftung.innerHTML = "";
             svgpunkte.innerHTML = "";
             var zellen = Array.from(document.getElementById("x-werte").getElementsByTagName("input"));
+
             for (i = 0; i < zellen.length; i++) {
                 let punkt = document.createElementNS("http://www.w3.org/2000/svg", "circle");
                 var xwert = Number(zellen[i].value);
@@ -176,40 +178,43 @@
                 var punkty = -ywert * 25;
                 allepunktex[i] = punktx;
                 allepunktey[i] = punkty;
-                minx = Math.min(...allepunktex);
-                maxx = Math.max(...allepunktex);
-                miny = Math.min(...allepunktey);
-                maxy = Math.max(...allepunktey);
-                let widths = Math.abs(minx) + Math.abs(maxx);
-                let heights = Math.abs(miny) + Math.abs(maxy);
 
-                svgele.setAttribute("height", Math.abs(heights + 50));
-                svgele.setAttribute("width", Math.abs(widths + 50));
-                svgele.setAttribute("x", minx);
-                svgele.setAttribute("y", maxy);
-
-                //${} ist für dynamischen string. Wird ersetzt durch das Ergebnis der Rechnung dadrin
-                svgele.setAttribute("viewBox", `${minx - 50} ${miny - 50} ${widths + 100} ${heights + 100}`);//
-
-                //Gitterlinien machen
-                gitter.setAttribute("x", minx - 50);
-                gitter.setAttribute("y", miny - 100);
-                gitter.setAttribute("width", widths + 200);
-                gitter.setAttribute("height", heights + 200);
-
-                //Punkte erstellen und setzen
+                 //Punkte erstellen und setzen
                 punkt.setAttribute("cx", punktx);
                 punkt.setAttribute("cy", punkty);
                 punkt.setAttribute("r", 3);
                 punkt.setAttribute("class", "punkt");
                 svgpunkte.appendChild(punkt);
             }
+            //Min- und Max-Werte setzen
+            minx = Math.min(...allepunktex);
+            maxx = Math.max(...allepunktex);
+            miny = Math.min(...allepunktey);
+            maxy = Math.max(...allepunktey);
+            let widths = Math.abs(minx) + Math.abs(maxx);
+            let heights = Math.abs(miny) + Math.abs(maxy);
+
+            //svg skalieren
+            svgele.setAttribute("height", Math.abs(heights + 50));
+            svgele.setAttribute("width", Math.abs(widths + 50));
+            svgele.setAttribute("x", minx);
+            svgele.setAttribute("y", maxy);
+
+            //${} ist für dynamischen string. Wird ersetzt durch das Ergebnis der Rechnung dadrin
+            svgele.setAttribute("viewBox", `${minx - 50} ${miny - 50} ${widths + 100} ${heights + 100}`);//
+
+            //Gitterlinien machen
+            gitter.setAttribute("x", minx - 50);
+            gitter.setAttribute("y", miny - 100);
+            gitter.setAttribute("width", widths + 200);
+            gitter.setAttribute("height", heights + 200);
+
 
             //Achsen erschaffen
             let xAchse = document.createElementNS("http://www.w3.org/2000/svg", "line");
             let yAchse = document.createElementNS("http://www.w3.org/2000/svg", "line");
 
-            //Beschriftung erstellen
+            //x-Achsenbeschriftung zu den Werten erstellen
             for (let i = 0; i < zellen.length; i++) {
                 let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
                 let beschriftungx = Number(zellen[i].value);
@@ -229,6 +234,7 @@
                 }
             }
 
+            //x-Achsenbeschriftung "x-Achse" hinzufügen
             let textbeschriftungx = document.createElementNS("http://www.w3.org/2000/svg", "text");
             textbeschriftungx.setAttribute("x", allepunktex[allepunktex.length - 1] - 80);
             textbeschriftungx.setAttribute("y", -20);
@@ -236,6 +242,7 @@
             textbeschriftungx.innerHTML = "x-Achse";
             Beschriftung.appendChild(textbeschriftungx);
 
+            //y-Achsenbeschriftung zu den Werten erstellen
             for (let i = 0; i < zellen.length; i++) {
                 let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
                 let beschriftungy = Number(alleYWerte[i]);
@@ -250,6 +257,7 @@
                 }
             }
 
+            //y-Achsenbeschriftung "y-Achse" hinzufügen
             let textbeschriftungy = document.createElementNS("http://www.w3.org/2000/svg", "text");
             textbeschriftungy.setAttribute("x", 20);
             textbeschriftungy.setAttribute("y", miny - 20);
@@ -280,7 +288,7 @@
             werteberechnung();
             zeichne();
         });
-        //tabelleSetup();
+
         inputserstellen();
         werteberechnung();
         zeichne();

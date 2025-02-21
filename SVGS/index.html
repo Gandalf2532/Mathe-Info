@@ -148,6 +148,14 @@
                 td.appendChild(input);
                 xReihe.appendChild(td);
             }
+            var zellen = Array.from(document.getElementById("x-werte").getElementsByTagName("input"));
+            //eventListener Hinzufügen
+            for(let i=0; i<zellen.length; i++){
+                zellen[i].addEventListener('input', () => {
+                    werteberechnung();
+                    zeichne();
+                });
+            }
         }
         function werteberechnung(){ // Soll die Funktionswerte berechnen
             //Array erstellen. Muss an der Stelle sein, damit die x-Werte schon existieren
@@ -282,6 +290,8 @@
         }
         eingabefürinputs.addEventListener('change', inputserstellen);
         inputserstellen();
+        werteberechnung();
+        zeichne();
     </script>
 </body>
 </html>

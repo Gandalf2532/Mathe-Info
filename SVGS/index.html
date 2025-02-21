@@ -72,28 +72,7 @@
             Funktionstabelle
         </thead>
         <tr id="x-werte">
-            <th>X-Werte</th>
-            <!--<td> <input type="number" class="eingabe" value="1"></td>
-            <td> <input type="number" class="eingabe" value="5"></td>
-            <td> <input type="number" class="eingabe" value="-5"></td>
-            <td> <input type="number" class="eingabe" value="0"></td>
-            <td> <input type="number" class="eingabe" value="-1"></td>
-            <td> <input type="number" class="eingabe"></td>
-            <td> <input type="number" class="eingabe"></td>
-            <td> <input type="number" class="eingabe"></td>
-            <td> <input type="number" class="eingabe"></td>
-            <td> <input type="number" class="eingabe"></td>
-            <td> <input type="number" class="eingabe"></td>
-            <td> <input type="number" class="eingabe"></td>
-            <td> <input type="number" class="eingabe"></td>
-            <td> <input type="number" class="eingabe"></td>
-            <td> <input type="number" class="eingabe"></td>
-            <td> <input type="number" class="eingabe"></td>
-            <td> <input type="number" class="eingabe"></td>
-            <td> <input type="number" class="eingabe"></td>
-            <td> <input type="number" class="eingabe"></td>
-            <td> <input type="number" class="eingabe"></td>
-            <td> <input type="number" class="eingabe"></td>-->
+            <th>X-Wert</th>
         </tr>
         <tr id="y-Reihe">
         </tr>
@@ -134,7 +113,6 @@
 
         function inputserstellen(){
             //erstellt die inputs in der x-Reihe. Menge abhängig des Inputfeldes mit der id=eingabe-wert
-            console.log(eingabefürinputs);
             xReihe.innerHTML = "";
             var th = document.createElement("th");
             th.innerText = "X-Wert"; //schreibt den th neu
@@ -148,7 +126,9 @@
                 td.appendChild(input);
                 xReihe.appendChild(td);
             }
+            
             var zellen = Array.from(document.getElementById("x-werte").getElementsByTagName("input"));
+
             //eventListener Hinzufügen
             for(let i=0; i<zellen.length; i++){
                 zellen[i].addEventListener('input', () => {
@@ -156,6 +136,7 @@
                     zeichne();
                 });
             }
+            werteberechnung();
         }
         function werteberechnung(){ // Soll die Funktionswerte berechnen
             //Array erstellen. Muss an der Stelle sein, damit die x-Werte schon existieren
@@ -179,6 +160,9 @@
             }
         }
         function zeichne(){
+            achsengruppe.innerHTML = "";
+            Beschriftung.innerHTML = "";
+            svgpunkte.innerHTML = "";
             var zellen = Array.from(document.getElementById("x-werte").getElementsByTagName("input"));
             for (i = 0; i < zellen.length; i++) {
                 let punkt = document.createElementNS("http://www.w3.org/2000/svg", "circle");
@@ -288,6 +272,7 @@
 
             console.log(`minx: ${minx}, maxx: ${maxx}, miny: ${miny}, maxy: ${maxy}`);
         }
+
         eingabefürinputs.addEventListener('change', inputserstellen);
         inputserstellen();
         werteberechnung();

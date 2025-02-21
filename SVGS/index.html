@@ -104,6 +104,7 @@
         var allepunktex = [];
         var allepunktey = [];
         var alleYWerte = [];
+        var zellen = ["1", "5423", "7842365"];
         let minx;
         let maxx;
         let miny;
@@ -116,11 +117,16 @@
             var th = document.createElement("th");
             th.innerText = "X-Wert"; //schreibt den th neu
             xReihe.appendChild(th);
+            console.log(zellen.length)
             for(let i = 0; i<eingabefürinputs.value; i++){
                 let input = document.createElement("input");
                 input.type = "number";
                 input.className = "eingabe";
-                input.value = i;
+                if(zellen.length > 0){
+                    input.value = zellen[i];
+                }else{
+                    input.value = i;
+                }
                 let td = document.createElement("td");
                 td.appendChild(input);
                 xReihe.appendChild(td);

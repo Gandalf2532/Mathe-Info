@@ -14,7 +14,7 @@
 
         .gitterlinie {
             stroke: lightgray;
-            stroke-width: 1;
+            stroke-width: 10;
         }
 
         table {
@@ -34,58 +34,88 @@
 
         .achsen {
             stroke: black;
-            stroke-width: 5;
+            stroke-width: 10;
+        }
+        .textfeldx{
+            stroke: black;
+            font-size: 10%;
+            font-size: 30px;
+        }
+        .textfeldy{
+            stroke: black;
+            font-size: 10%;
+            font-size: 15px;
+        }
+        .beschriftung{
+            stroke: black;
+            font-size: 10%;
+            font-size: 15px;
+        }
+        .eingabe{
+            width: 50px;
+            height: 20px;
+        }
+        .button{
+            margin: 20px;
+            float: right;
+            padding: 10px;
+            border: 2px solid black;
+            border-radius: 15px;
+
         }
     </style>
 </head>
 <body>
+    <input type="number" class="eingabe" id="eingabe-werte">
     <table>
         <thead>
             Funktionstabelle
         </thead>
         <tr id="x-werte">
             <th>X-Werte</th>
-            <td>-10</td>
-            <td>-9</td>
-            <td>-8</td>
-            <td>-7</td>
-            <td>-6</td>
-            <td>-5</td>
-            <td>-4</td>
-            <td>-3</td>
-            <td>-2</td>
-            <td>-1</td>
-            <td>0</td>
-            <td>1</td>
-            <td>2</td>
-            <td>3</td>
-            <td>4</td>
-            <td>5</td>
-            <td>6</td>
-            <td>7</td>
-            <td>8</td>
-            <td>9</td>
-            <td>10</td>
+            <td> <input type="number" class="eingabe" value="1"></td>
+            <td> <input type="number" class="eingabe" value="5"></td>
+            <td> <input type="number" class="eingabe" value="-5"></td>
+            <td> <input type="number" class="eingabe" value="0"></td>
+            <td> <input type="number" class="eingabe" value="-1"></td>
+            <td> <input type="number" class="eingabe"></td>
+            <td> <input type="number" class="eingabe"></td>
+            <td> <input type="number" class="eingabe"></td>
+            <td> <input type="number" class="eingabe"></td>
+            <td> <input type="number" class="eingabe"></td>
+            <td> <input type="number" class="eingabe"></td>
+            <td> <input type="number" class="eingabe"></td>
+            <td> <input type="number" class="eingabe"></td>
+            <td> <input type="number" class="eingabe"></td>
+            <td> <input type="number" class="eingabe"></td>
+            <td> <input type="number" class="eingabe"></td>
+            <td> <input type="number" class="eingabe"></td>
+            <td> <input type="number" class="eingabe"></td>
+            <td> <input type="number" class="eingabe"></td>
+            <td> <input type="number" class="eingabe"></td>
+            <td> <input type="number" class="eingabe"></td>
         </tr>
         <tr id="y-Reihe">
-            <th>Y-Werte</th>
         </tr>
     </table>
-    <svg id="svg1" viewBox=" 0 0 500 500">
+    <button onclick="werteberechnung(), zeichne()" class="button" id="button">Abschicken</button>
+    <svg id="svg1" viewBox=" 0 0 0 0">
         <defs>
-            <pattern id="grid" class="gitterlinie" patternUnits="userSpaceOnUse" width="10" height="10">
-                <path class="gitterlinie" d="M 10 0 L 0 0 0 10" fill="none"/>
+            <pattern id="grid" class="gitterlinie" patternUnits="userSpaceOnUse" width="50" height="50">
+                <path class="gitterlinie" d="M 50 0 L 0 0 0 50" fill="none"/>
             </pattern>
         </defs>
         <rect class="gitterlinie" width="100%" height="100%" fill="url(#grid)" id="gitterrect"/>
         <g id="Achsengruppe">
         </g>
+        <g id="Beschriftung"></g>
         <g id="Punkte">
         </g>
     </svg>
     <script>
         var row = document.getElementById("x-werte");
-        let zellen = row.getElementsByTagName("td");
+        //let zellen = row.getElementsByTagName("td");
+        let zellen = Array.from(document.getElementById("x-werte").getElementsByTagName("input"));
         let yReihe = document.getElementById("y-Reihe");
         let svgpunkte = document.getElementById("Punkte");
         let svgele = document.getElementById("svg1");
@@ -102,91 +132,137 @@
         let miny;
         let maxy;
         let achsengruppe = document.getElementById("Achsengruppe");
-        console.log(gitter);
 
-        for (let i = 0; i < zellen.length; i++) {
-            //füllt die Tabelle aus
-            var xwert = Number(zellen[i].innerHTML);
-            var werte = zellen[i].innerHTML;
-            var ywert = 0.5 * (werte ** 2) - 2 * werte - 4;
-            alleYWerte[i] = ywert;
-            var td = document.createElement('td');
-            td.innerText = ywert;
-            funktionswerte[i] = ywert;
-            yReihe.appendChild(td);
+        function werteberechnung(){ // Soll die Funktionswerte berechnen
+            //cleart die y-Reihe
+            console.log("test");
+            yReihe.innerHTML = "";
+            var th = document.createElement("th");
+            th.innerText = "Y-Wert"; //schreibt den th neu
+            yReihe.appendChild(th);
+            for (let i = 0; i < zellen.length; i++) {
+                //füllt die Tabelle aus
+                var xwert = Number(zellen[i].value);
+                var werte = zellen[i].value;
+                var ywert = 0.5 * (werte ** 2) - 2 * werte - 4;
+                alleYWerte[i] = ywert;
+                var td = document.createElement('td');
+                td.innerText = ywert;
+                funktionswerte[i] = ywert;
+                yReihe.appendChild(td);
+            }
         }
+        function zeichne(){
+            for (i = 0; i < zellen.length; i++) {
+                let punkt = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                var xwert = Number(zellen[i].value);
+                var ywert = Number(alleYWerte[i]);
+                var punktx = xwert * 25;
+                var punkty = -ywert * 25;
+                allepunktex[i] = punktx;
+                allepunktey[i] = punkty;
+                minx = Math.min(...allepunktex);
+                maxx = Math.max(...allepunktex);
+                miny = Math.min(...allepunktey);
+                maxy = Math.max(...allepunktey);
+                let widths = Math.abs(minx) + Math.abs(maxx);
+                let heights = Math.abs(miny) + Math.abs(maxy);
 
-        for (i = 0; i < zellen.length; i++) {
-            let punkt = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-            var xwert = Number(zellen[i].innerHTML);
-            var ywert = Number(alleYWerte[i]);
-            var punktx = xwert * 5;
-            var punkty = -ywert * 5;
-            allepunktex[i] = punktx;
-            allepunktey[i] = punkty;
-            minx = Math.min(...allepunktex);
-            maxx = Math.max(...allepunktex);
-            miny = Math.min(...allepunktey);
-            maxy = Math.max(...allepunktey);
-            let widths = Math.abs(minx) + Math.abs(maxx);
-            let heights = Math.abs(miny) + Math.abs(maxy);
+                svgele.setAttribute("height", Math.abs(heights + 50));
+                svgele.setAttribute("width", Math.abs(widths + 50));
+                svgele.setAttribute("x", minx);
+                svgele.setAttribute("y", maxy);
 
-            //viewbox setzen
-            //ehemals so:
-            /*svgviewbox.minx = minx;
-            svgviewbox.width = widths;
-            svgviewbox.miny = miny;
-            svgviewbox.height = heights;*/
-            //svgele.style.width = Math.abs(widths+100);
-            //neu so: 
                 //${} ist für dynamischen string. Wird ersetzt durch das Ergebnis der Rechnung dadrin
-            svgele.setAttribute("viewBox", `${minx - 50} ${miny - 50} ${widths + 100} ${heights + 100}`);
+                svgele.setAttribute("viewBox", `${minx - 50} ${miny - 50} ${widths + 100} ${heights + 100}`);//
 
-            svgele.setAttribute("width", Math.abs(widths)+100);
-            svgele.setAttribute("height", Math.abs(heights)+100);
+                //Gitterlinien machen
+                gitter.setAttribute("x", minx - 50);
+                gitter.setAttribute("y", miny - 100);
+                gitter.setAttribute("width", widths + 200);
+                gitter.setAttribute("height", heights + 200);
+
+                //Punkte erstellen und setzen
+                punkt.setAttribute("cx", punktx);
+                punkt.setAttribute("cy", punkty);
+                punkt.setAttribute("r", 3);
+                punkt.setAttribute("class", "punkt");
+                svgpunkte.appendChild(punkt);
+            }
+            //Achsen erschaffen
+            let xAchse = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            let yAchse = document.createElementNS("http://www.w3.org/2000/svg", "line");
+
+            //Beschriftung erstellen
+            for (let i = 0; i < zellen.length; i++) {
+                let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                let beschriftungx = Number(zellen[i].value);
+                let positionx = allepunktex[i];
+                if (beschriftungx == 0) {
+                    text.setAttribute("x", positionx + 10);
+                    text.setAttribute("y", 30);
+                    text.setAttribute("class", "textfeldx");
+                    text.innerHTML = beschriftungx;
+                    Beschriftung.appendChild(text);
+                }
+                else {
+                    text.setAttribute("x", positionx - 10);
+                    text.setAttribute("y", 30);
+                    text.setAttribute("class", "textfeldx");
+                    text.innerHTML = beschriftungx;
+                    Beschriftung.appendChild(text);
+                }
 
 
-            //Gitterlinien machen
-            gitter.setAttribute("x", minx - 50);
-            gitter.setAttribute("y", miny - 50);
-            gitter.setAttribute("width", Math.abs(widths) + 100);
-            gitter.setAttribute("height", Math.abs(heights) + 100);
+            }
+            let textbeschriftungx = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            textbeschriftungx.setAttribute("x", allepunktex[allepunktex.length - 1] - 80);
+            textbeschriftungx.setAttribute("y", -20);
+            textbeschriftungx.setAttribute("class", "beschriftung");
+            textbeschriftungx.innerHTML = "x-Achse";
+            Beschriftung.appendChild(textbeschriftungx);
 
-            //Punkte erstellen und setzen
-            punkt.setAttribute("cx", punktx);
-            punkt.setAttribute("cy", punkty);
-            punkt.setAttribute("r", 3);
-            punkt.setAttribute("class", "punkt"); 
-            svgpunkte.appendChild(punkt);
+            for (let i = 0; i < zellen.length; i++) {
+                let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                let beschriftungy = Number(alleYWerte[i]);
+                let positiony = Number(allepunktey[i]);
+                if (beschriftungy == 0) { }
+                else {
+                    text.setAttribute("x", -35);
+                    text.setAttribute("y", positiony);
+                    text.setAttribute("class", "beschriftung");
+                    text.innerHTML = beschriftungy;
+                    Beschriftung.appendChild(text);
+                }
+            }
+            let textbeschriftungy = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            textbeschriftungy.setAttribute("x", 20);
+            textbeschriftungy.setAttribute("y", miny - 20);
+            textbeschriftungy.setAttribute("class", "textfeldy");
+            textbeschriftungy.innerHTML = "y-Achse";
+            Beschriftung.appendChild(textbeschriftungy);
+
+            // Achsen-Eigenschaften setzen
+            xAchse.setAttribute("x1", minx - 50);
+            xAchse.setAttribute("x2", maxx + 50);
+            xAchse.setAttribute("y1", 0);
+            xAchse.setAttribute("y2", 0);
+            xAchse.setAttribute("class", "achsen");
+
+            yAchse.setAttribute("x1", 0);
+            yAchse.setAttribute("x2", 0);
+            yAchse.setAttribute("y1", miny - 100);
+            yAchse.setAttribute("y2", maxy + 100);
+            yAchse.setAttribute("class", "achsen");
+
+            // Achsen zum SVG hinzufügen
+            achsengruppe.appendChild(xAchse);
+            achsengruppe.appendChild(yAchse);
+
+            console.log(`minx: ${minx}, maxx: ${maxx}, miny: ${miny}, maxy: ${maxy}`);
         }
-
-        //Achsen erschaffen
-        let xAchse = document.createElementNS("http://www.w3.org/2000/svg", "line");
-        let yAchse = document.createElementNS("http://www.w3.org/2000/svg", "line");
-
-        // Achsen-Eigenschaften setzen
-        xAchse.setAttribute("x1", minx - 50);
-        xAchse.setAttribute("x2", maxx + 50);
-        xAchse.setAttribute("y1", 0);
-        xAchse.setAttribute("y2", 0);
-        xAchse.setAttribute("class", "achsen");
-
-        yAchse.setAttribute("x1", 0);
-        yAchse.setAttribute("x2", 0);
-        yAchse.setAttribute("y1", miny - 50);
-        yAchse.setAttribute("y2", maxy + 50);
-        yAchse.setAttribute("class", "achsen");
-
-        // Achsen zum SVG hinzufügen
-        achsengruppe.appendChild(xAchse);
-        achsengruppe.appendChild(yAchse);
-
-        //?
-        let offsetX = Math.min(0, minx) - 50;
-        let offsetY = Math.min(0, miny) - 50;
-
-        svgviewbox.x = offsetX;
-        svgviewbox.y = offsetY;
+        werteberechnung();
+        zeichne();
     </script>
 </body>
 </html>

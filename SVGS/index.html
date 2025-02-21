@@ -66,13 +66,13 @@
     </style>
 </head>
 <body>
-    <input type="number" class="eingabe" id="eingabe-werte" value="10">
+    <input type="number" class="eingabe" id="eingabe-werte" value="10" min="2">
     <table>
         <thead>
             Funktionstabelle
         </thead>
         <tr id="x-werte">
-            <th>X-Wert</th>
+
         </tr>
         <tr id="y-Reihe">
         </tr>
@@ -104,7 +104,7 @@
         var allepunktex = [];
         var allepunktey = [];
         var alleYWerte = [];
-        var zellen = ["1", "5423", "7842365"];
+        let zellen = [];
         let minx;
         let maxx;
         let miny;
@@ -113,26 +113,29 @@
         let eingabefürinputs = document.getElementById("eingabe-werte"); //Mir fallen keine Namen mehr ein
 
         function inputserstellen(){  //erstellt die inputs in der x-Reihe. Menge abhängig des Inputfeldes mit der id=eingabe-wert
+            if(eingabefürinputs.value <= 2){
+                eingabefürinputs.value  =  2;
+            }
             xReihe.innerHTML = ""; //cleart die x-Reihe
             var th = document.createElement("th");
             th.innerText = "X-Wert"; //schreibt den th neu
             xReihe.appendChild(th);
-            console.log(zellen.length)
             for(let i = 0; i<eingabefürinputs.value; i++){
                 let input = document.createElement("input");
                 input.type = "number";
                 input.className = "eingabe";
-                if(zellen.length > 0){
-                    input.value = zellen[i];
-                }else{
-                    input.value = i;
+                try{  //versucht die Werte aus der alten xReihe zu verwenden
+                    input.value = zellen[i].value; 
+                }
+                catch(err){  //wenn alte werte nicht existieren, wird einfach i verwendet
+                    input.value = i;  //i sollte ausgetauscht werden
                 }
                 let td = document.createElement("td");
                 td.appendChild(input);
                 xReihe.appendChild(td);
             }
 
-            var zellen = Array.from(document.getElementById("x-werte").getElementsByTagName("input"));
+            zellen = Array.from(document.getElementById("x-werte").getElementsByTagName("input"));
 
             //eventListener Hinzufügen
             for(let i=0; i<zellen.length; i++){
@@ -144,7 +147,7 @@
             werteberechnung();
         }
         function werteberechnung(){ // Soll die Funktionswerte berechnen
-            var zellen = Array.from(document.getElementById("x-werte").getElementsByTagName("input")); //Array erstellen. Muss an der Stelle sein, damit die x-Werte schon existieren
+            zellen = Array.from(document.getElementById("x-werte").getElementsByTagName("input")); //Array erstellen. Muss an der Stelle sein, damit die x-Werte schon existieren
             yReihe.innerHTML = ""; //cleart die y-Reihe
             var th = document.createElement("th");
             th.innerText = "Y-Wert"; //schreibt den th neu
@@ -272,7 +275,12 @@
             achsengruppe.appendChild(yAchse);
         }
 
-        eingabefürinputs.addEventListener('change', inputserstellen);
+        eingabefürinputs.addEventListener('change', () => {
+            inputserstellen();
+            werteberechnung();
+            zeichne();
+        });
+        //tabelleSetup();
         inputserstellen();
         werteberechnung();
         zeichne();

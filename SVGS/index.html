@@ -114,7 +114,6 @@
     </svg>
     <script>
         var xReihe = document.getElementById("x-werte");
-        let zellen = Array.from(document.getElementById("x-werte").getElementsByTagName("input"));
         let yReihe = document.getElementById("y-Reihe");
         let svgpunkte = document.getElementById("Punkte");
         let svgele = document.getElementById("svg1");
@@ -144,12 +143,15 @@
                 let input = document.createElement("input");
                 input.type = "number";
                 input.className = "eingabe";
+                input.value = i;
                 let td = document.createElement("td");
                 td.appendChild(input);
                 xReihe.appendChild(td);
             }
         }
         function werteberechnung(){ // Soll die Funktionswerte berechnen
+            //Array erstellen. Muss an der Stelle sein, damit die x-Werte schon existieren
+            var zellen = Array.from(document.getElementById("x-werte").getElementsByTagName("input"));
             //cleart die y-Reihe
             console.log("test");
             yReihe.innerHTML = "";
@@ -169,6 +171,7 @@
             }
         }
         function zeichne(){
+            var zellen = Array.from(document.getElementById("x-werte").getElementsByTagName("input"));
             for (i = 0; i < zellen.length; i++) {
                 let punkt = document.createElementNS("http://www.w3.org/2000/svg", "circle");
                 var xwert = Number(zellen[i].value);

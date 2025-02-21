@@ -111,9 +111,8 @@
         let achsengruppe = document.getElementById("Achsengruppe");
         let eingabefürinputs = document.getElementById("eingabe-werte"); //Mir fallen keine Namen mehr ein
 
-        function inputserstellen(){
-            //erstellt die inputs in der x-Reihe. Menge abhängig des Inputfeldes mit der id=eingabe-wert
-            xReihe.innerHTML = "";
+        function inputserstellen(){  //erstellt die inputs in der x-Reihe. Menge abhängig des Inputfeldes mit der id=eingabe-wert
+            xReihe.innerHTML = ""; //cleart die x-Reihe
             var th = document.createElement("th");
             th.innerText = "X-Wert"; //schreibt den th neu
             xReihe.appendChild(th);
@@ -126,7 +125,7 @@
                 td.appendChild(input);
                 xReihe.appendChild(td);
             }
-            
+
             var zellen = Array.from(document.getElementById("x-werte").getElementsByTagName("input"));
 
             //eventListener Hinzufügen
@@ -139,16 +138,12 @@
             werteberechnung();
         }
         function werteberechnung(){ // Soll die Funktionswerte berechnen
-            //Array erstellen. Muss an der Stelle sein, damit die x-Werte schon existieren
-            var zellen = Array.from(document.getElementById("x-werte").getElementsByTagName("input"));
-            //cleart die y-Reihe
-            console.log("test");
-            yReihe.innerHTML = "";
+            var zellen = Array.from(document.getElementById("x-werte").getElementsByTagName("input")); //Array erstellen. Muss an der Stelle sein, damit die x-Werte schon existieren
+            yReihe.innerHTML = ""; //cleart die y-Reihe
             var th = document.createElement("th");
             th.innerText = "Y-Wert"; //schreibt den th neu
             yReihe.appendChild(th);
-            for (let i = 0; i < zellen.length; i++) {
-                //füllt die Tabelle aus
+            for (let i = 0; i < zellen.length; i++) { //füllt die tabelle aus
                 var xwert = Number(zellen[i].value);
                 var werte = zellen[i].value;
                 var ywert = 0.5 * (werte ** 2) - 2 * werte - 4;
@@ -200,6 +195,7 @@
                 punkt.setAttribute("class", "punkt");
                 svgpunkte.appendChild(punkt);
             }
+
             //Achsen erschaffen
             let xAchse = document.createElementNS("http://www.w3.org/2000/svg", "line");
             let yAchse = document.createElementNS("http://www.w3.org/2000/svg", "line");
@@ -215,17 +211,15 @@
                     text.setAttribute("class", "textfeldx");
                     text.innerHTML = beschriftungx;
                     Beschriftung.appendChild(text);
-                }
-                else {
+                }else {
                     text.setAttribute("x", positionx - 10);
                     text.setAttribute("y", 30);
                     text.setAttribute("class", "textfeldx");
                     text.innerHTML = beschriftungx;
                     Beschriftung.appendChild(text);
                 }
-
-
             }
+
             let textbeschriftungx = document.createElementNS("http://www.w3.org/2000/svg", "text");
             textbeschriftungx.setAttribute("x", allepunktex[allepunktex.length - 1] - 80);
             textbeschriftungx.setAttribute("y", -20);
@@ -246,6 +240,7 @@
                     Beschriftung.appendChild(text);
                 }
             }
+
             let textbeschriftungy = document.createElementNS("http://www.w3.org/2000/svg", "text");
             textbeschriftungy.setAttribute("x", 20);
             textbeschriftungy.setAttribute("y", miny - 20);
@@ -269,8 +264,6 @@
             // Achsen zum SVG hinzufügen
             achsengruppe.appendChild(xAchse);
             achsengruppe.appendChild(yAchse);
-
-            console.log(`minx: ${minx}, maxx: ${maxx}, miny: ${miny}, maxy: ${maxy}`);
         }
 
         eingabefürinputs.addEventListener('change', inputserstellen);

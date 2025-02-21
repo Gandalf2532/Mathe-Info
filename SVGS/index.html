@@ -66,7 +66,7 @@
     </style>
 </head>
 <body>
-    <input type="number" class="eingabe" id="eingabe-werte" value="10" min="2">
+    <input type="number" class="eingabe" id="eingabe-werte" value="11" min="2">
     <table>
         <thead>
             Funktionstabelle
@@ -128,7 +128,7 @@
                     input.value = zellen[i].value; 
                 }
                 catch(err){  //wenn alte werte nicht existieren, wird einfach i verwendet
-                    input.value = i;  //i sollte ausgetauscht werden
+                    input.value = i - 5;  //i - 5 sollte noch durch was sinnvolles ausgetauscht werden
                 }
                 let td = document.createElement("td");
                 td.appendChild(input);

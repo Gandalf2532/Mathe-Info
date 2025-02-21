@@ -146,6 +146,7 @@
             }
             werteberechnung();
         }
+
         function werteberechnung(){ // Soll die Funktionswerte berechnen
             zellen = Array.from(document.getElementById("x-werte").getElementsByTagName("input")); //Array erstellen. Muss an der Stelle sein, damit die x-Werte schon existieren
             yReihe.innerHTML = ""; //cleart die y-Reihe
@@ -163,15 +164,22 @@
                 yReihe.appendChild(td);
             }
         }
+
         function zeichne(){
+
             //alte Sachen clearen
             achsengruppe.innerHTML = "";
             Beschriftung.innerHTML = "";
             svgpunkte.innerHTML = "";
             var zellen = Array.from(document.getElementById("x-werte").getElementsByTagName("input"));
 
+            //Punkte machen, setzen usw.
             for (i = 0; i < zellen.length; i++) {
+
+                //Punkt erstellen
                 let punkt = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+
+                //nötige variablen setzen und in Arrays speichern
                 var xwert = Number(zellen[i].value);
                 var ywert = Number(alleYWerte[i]);
                 var punktx = xwert * 25;
@@ -179,13 +187,14 @@
                 allepunktex[i] = punktx;
                 allepunktey[i] = punkty;
 
-                 //Punkte erstellen und setzen
+                //Attribute setzen und Punkt einfügen
                 punkt.setAttribute("cx", punktx);
                 punkt.setAttribute("cy", punkty);
                 punkt.setAttribute("r", 3);
                 punkt.setAttribute("class", "punkt");
                 svgpunkte.appendChild(punkt);
             }
+
             //Min- und Max-Werte setzen
             minx = Math.min(...allepunktex);
             maxx = Math.max(...allepunktex);

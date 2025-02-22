@@ -44,18 +44,15 @@
         }
         .textfeldx{
             stroke: black;
-            font-size: 10%;
-            font-size: 30px;
+            font-size: 100%;
         }
         .textfeldy{
             stroke: black;
-            font-size: 10%;
-            font-size: 15px;
+            font-size: 100%;
         }
         .beschriftung{
             stroke: black;
-            font-size: 10%;
-            font-size: 15px;
+            font-size: 100%;
         }
         .eingabe{
             width: 50px;
@@ -67,7 +64,9 @@
             padding: 10px;
             border: 2px solid black;
             border-radius: 15px;
-
+        }
+        .Kurve{
+            stroke:red;
         }
     </style>
 </head>
@@ -114,6 +113,7 @@
         let maxx;
         let miny;
         let maxy;
+        let Beschriftung = document.getElementById("Beschriftung");
         let achsengruppe = document.getElementById("Achsengruppe");
         let eingabefürinputs = document.getElementById("eingabe-werte"); //Mir fallen keine Namen mehr ein
 
@@ -171,7 +171,6 @@
         }
 
         function zeichne(){
-
             //alte Sachen clearen
             achsengruppe.innerHTML = "";
             Beschriftung.innerHTML = "";
@@ -295,9 +294,34 @@
             // Achsen zum SVG hinzufügen
             achsengruppe.appendChild(xAchse);
             achsengruppe.appendChild(yAchse);
+            zeichneKurve();
         }
+        function zeichneKurve() {
+                let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
 
-        eingabefürinputs.addEventListener('change', () => {
+                // Starte den Pfad mit dem ersten Punkt
+                let d = `M ${allepunktex[0]} ${allepunktey[0]}`;
+
+                // Berechnung der Bézier-Kontrollpunkte
+                for (let i = 1; i < allepunktex.length - 1; i++) {
+                    let xc = (allepunktex[i] + allepunktex[i + 1]) / 2;
+                    let yc = (allepunktey[i] + allepunktey[i + 1]) / 2;
+                    d += ` Q ${allepunktex[i]} ${allepunktey[i]}, ${xc} ${yc}`;
+                }
+
+                // Letzten Punkt hinzufügen
+                d += ` T ${allepunktex[allepunktex.length - 1]} ${allepunktey[allepunktey.length - 1]}`;
+
+                // Attribute setzen und ins SVG einfügen
+                path.setAttribute("d", d);
+                path.setAttribute("stroke", "blue");
+                path.setAttribute("fill", "none");
+                path.setAttribute("stroke-width", "3");
+
+                svgpunkte.appendChild(path);
+            }
+
+        eingabefürinputs.addEventListener('input', () => {
             inputserstellen();
             werteberechnung();
             zeichne();

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>svgs</title>
+    <title>Heheheha</title>
     <style>
         svg {
             background-color: rgb(252, 252, 252);
@@ -13,7 +13,7 @@
         }
 
         .gitterlinie {
-            stroke: lightgray;
+            stroke: gray;
             stroke-width: 10;
         }
 
@@ -21,21 +21,30 @@
             border-collapse: collapse;
             margin-bottom: 20px;
         }
+        table input{
+            color: black;
+            border:none;
+            text-align: center;
+        }
+        label input{
+            border:none;
+            font-size: 10px;
+            
+        }
+        label{
+            font-size: medium;
+            border: 5px black solid;
+            height: 200px;
+        }
 
         th,td {
             border: 1px solid black;
             padding: 5px;
             text-align: center;
-
-            .eingabe{
-                color:black;
-                border: none;
-                text-align: center;
-            }
         }
 
         .punkt {
-            fill: red;
+            fill:red;
         }
 
         .achsen {
@@ -44,15 +53,18 @@
         }
         .textfeldx{
             stroke: black;
-            font-size: 100%;
+            font-size: 10%;
+            font-size: 30px;
         }
         .textfeldy{
             stroke: black;
-            font-size: 100%;
+            font-size: 10%;
+            font-size: 15px;
         }
         .beschriftung{
             stroke: black;
-            font-size: 100%;
+            font-size: 10%;
+            font-size: 15px;
         }
         .eingabe{
             width: 50px;
@@ -64,14 +76,16 @@
             padding: 10px;
             border: 2px solid black;
             border-radius: 15px;
+
         }
-        .Kurve{
-            stroke:red;
+        .graph{
+            stroke-width: 1%;
+            stroke:black;
         }
     </style>
 </head>
 <body>
-    <label>Die Anzahl der x-Werte:<input type="number" class="eingabe" id="eingabe-werte" value="10" min="2"></label>
+    <label>Die Anzahl der x-Werte:<input type="number" class="eingabe" id="eingabe-werte" value="10" min="2"></label><br>
     <table>
         <thead>
             Funktionstabelle
@@ -82,10 +96,11 @@
         <tr id="y-Reihe">
         </tr>
     </table>
+    <button onclick="werteberechnung(), zeichne()" class="button" id="button">Abschicken</button>
     <svg id="svg1" viewBox=" 0 0 0 0">
         <defs>
-            <pattern id="grid" class="gitterlinie" patternUnits="userSpaceOnUse" width="25" height="25">
-                <path class="gitterlinie" d="M 25 0 L 0 0 0 25" fill="none"/>
+            <pattern id="grid" class="gitterlinie" patternUnits="userSpaceOnUse" width="50" height="50">
+                <path class="gitterlinie" d="M 50 0 L 0 0 0 50" fill="none"/>
             </pattern>
         </defs>
         <rect class="gitterlinie" width="100%" height="100%" fill="url(#grid)" id="gitterrect"/>
@@ -114,7 +129,6 @@
         let maxx;
         let miny;
         let maxy;
-        let Beschriftung = document.getElementById("Beschriftung");
         let achsengruppe = document.getElementById("Achsengruppe");
         let eingabefürinputs = document.getElementById("eingabe-werte"); //Mir fallen keine Namen mehr ein
 
@@ -134,7 +148,7 @@
                     input.value = zellen[i].value; 
                 }
                 catch(err){  //wenn alte werte nicht existieren, wird einfach i verwendet
-                    input.value = i - (eingabefürinputs.value-1)/2;  //Werte zu Beginn setzen. -1, weil 0 da ist. Die hälfte der Werte ist positiv, die andere negativ
+                    input.value = i;  //i sollte ausgetauscht werden
                 }
                 let td = document.createElement("td");
                 td.appendChild(input);
@@ -145,106 +159,88 @@
 
             //eventListener Hinzufügen
             for(let i=0; i<zellen.length; i++){
-                zellen[i].addEventListener('change', () => {
+                zellen[i].addEventListener('input', () => {
                     werteberechnung();
                     zeichne();
                 });
             }
             werteberechnung();
         }
-
-        function werteberechnung() {
-                zellen = Array.from(document.getElementById("x-werte").getElementsByTagName("input")); // X-Werte-Inputs holen
-                yReihe.innerHTML = "";
-                var th = document.createElement("th");
-                th.innerText = "Y-Wert";
-                yReihe.appendChild(th);
-
-                //Werte mit Referenz auf Inputs speichern
-                let allewertex = zellen.map(input => ({
-                    wert: Number(input.value)
-                }));
-
-                //Sortieren nach dem X-Wert
-                allewertex.sort((a, b) => a.wert - b.wert);
-
-                //Sortierte Werte zurück in die Tabelle schreiben
-                for (let i = 0; i < allewertex.length; i++) {
-                    zellen[i].value = allewertex[i].wert;
-                }
-
-                //Y-Werte berechnen und in die Tabelle schreiben
-                for (let i = 0; i < allewertex.length; i++) {
-                    let xwert = allewertex[i].wert;
-                    let ywert = 0.5 * (xwert ** 2) - 2 * xwert - 4;
-                    alleYWerte[i] = ywert;
-
-                    let td = document.createElement('td');
-                    td.innerText = ywert;
-                    funktionswerte[i] = ywert;
-                    yReihe.appendChild(td);
-                }
+        function werteberechnung(){ // Soll die Funktionswerte berechnen
+            zellen = Array.from(document.getElementById("x-werte").getElementsByTagName("input")); //Array erstellen. Muss an der Stelle sein, damit die x-Werte schon existieren
+            yReihe.innerHTML = ""; //cleart die y-Reihe
+            var th = document.createElement("th");
+            th.innerText = "Y-Wert"; //schreibt den th neu
+            yReihe.appendChild(th);
+            for (let i = 0; i < zellen.length; i++) { //füllt die tabelle aus
+                var xwert = Number(zellen[i].value);
+                var werte = zellen[i].value;
+                var ywert = 0.5 * (werte ** 2) - 2 * werte - 4;
+                alleYWerte[i] = ywert;
+                var td = document.createElement('td');
+                td.innerText = ywert;
+                funktionswerte[i] = ywert;
+                yReihe.appendChild(td);
             }
-
-
+        }
         function zeichne(){
-            //alte Sachen clearen
+            allepunktex = [];
+            allepunktey = [];
             achsengruppe.innerHTML = "";
             Beschriftung.innerHTML = "";
             svgpunkte.innerHTML = "";
             var zellen = Array.from(document.getElementById("x-werte").getElementsByTagName("input"));
-
-            //Punkte machen, setzen usw.
             for (i = 0; i < zellen.length; i++) {
-
-                //Punkt erstellen
                 let punkt = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-
-                //nötige variablen setzen und in Arrays speichern
                 var xwert = Number(zellen[i].value);
                 var ywert = Number(alleYWerte[i]);
                 var punktx = xwert * 25;
                 var punkty = -ywert * 25;
                 allepunktex[i] = punktx;
                 allepunktey[i] = punkty;
+                minx = Math.min(...allepunktex);
+                maxx = Math.max(...allepunktex);
+                miny = Math.min(...allepunktey);
+                maxy = Math.max(...allepunktey);
+                let widths = Math.abs(minx) + Math.abs(maxx);
+                let heights = Math.abs(miny) + Math.abs(maxy);
 
-                //Attribute setzen und Punkt einfügen
+                svgele.setAttribute("height", Math.abs(heights + 50));
+                svgele.setAttribute("width", Math.abs(widths + 50));
+                svgele.setAttribute("x", minx);
+                svgele.setAttribute("y", maxy);
+
+                //${} ist für dynamischen string. Wird ersetzt durch das Ergebnis der Rechnung dadrin
+                svgele.setAttribute("viewBox", `${minx - 50} ${miny - 50} ${widths + 100} ${heights + 100}`);//
+
+                //Gitterlinien machen
+                gitter.setAttribute("x", minx - 50);
+                gitter.setAttribute("y", miny - 100);
+                gitter.setAttribute("width", widths + 200);
+                gitter.setAttribute("height", heights + 200);
+                
+                //Punkte erstellen und setzen
                 punkt.setAttribute("cx", punktx);
                 punkt.setAttribute("cy", punkty);
                 punkt.setAttribute("r", 3);
                 punkt.setAttribute("class", "punkt");
                 svgpunkte.appendChild(punkt);
-            }
+                
+                //Graphen erstellen
+            };
+            zeichneLinie();
+            
 
-            //Min- und Max-Werte setzen
-            minx = Math.min(...allepunktex);
-            maxx = Math.max(...allepunktex);
-            miny = Math.min(...allepunktey);
-            maxy = Math.max(...allepunktey);
-            let widths = Math.abs(minx) + Math.abs(maxx);
-            let heights = Math.abs(miny) + Math.abs(maxy);
-
-            //svg skalieren
-            svgele.setAttribute("height", Math.abs(heights + 50));
-            svgele.setAttribute("width", Math.abs(widths + 50));
-            svgele.setAttribute("x", minx);
-            svgele.setAttribute("y", maxy);
-
-            //${} ist für dynamischen string. Wird ersetzt durch das Ergebnis der Rechnung dadrin
-            svgele.setAttribute("viewBox", `${minx - 50} ${miny - 50} ${widths + 100} ${heights + 100}`);//
-
-            //Gitterlinien machen
-            gitter.setAttribute("x", minx - 50);
-            gitter.setAttribute("y", miny - 100);
-            gitter.setAttribute("width", widths + 200);
-            gitter.setAttribute("height", heights + 200);
-
+            
+           
+                
+            
 
             //Achsen erschaffen
             let xAchse = document.createElementNS("http://www.w3.org/2000/svg", "line");
             let yAchse = document.createElementNS("http://www.w3.org/2000/svg", "line");
 
-            //x-Achsenbeschriftung zu den Werten erstellen
+            //Beschriftung erstellen
             for (let i = 0; i < zellen.length; i++) {
                 let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
                 let beschriftungx = Number(zellen[i].value);
@@ -264,15 +260,13 @@
                 }
             }
 
-            //x-Achsenbeschriftung "x-Achse" hinzufügen
             let textbeschriftungx = document.createElementNS("http://www.w3.org/2000/svg", "text");
-            textbeschriftungx.setAttribute("x", allepunktex[allepunktex.length - 1] - 80);
+            textbeschriftungx.setAttribute("x", maxx);
             textbeschriftungx.setAttribute("y", -20);
             textbeschriftungx.setAttribute("class", "beschriftung");
             textbeschriftungx.innerHTML = "x-Achse";
             Beschriftung.appendChild(textbeschriftungx);
 
-            //y-Achsenbeschriftung zu den Werten erstellen
             for (let i = 0; i < zellen.length; i++) {
                 let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
                 let beschriftungy = Number(alleYWerte[i]);
@@ -287,7 +281,6 @@
                 }
             }
 
-            //y-Achsenbeschriftung "y-Achse" hinzufügen
             let textbeschriftungy = document.createElementNS("http://www.w3.org/2000/svg", "text");
             textbeschriftungy.setAttribute("x", 20);
             textbeschriftungy.setAttribute("y", miny - 20);
@@ -311,39 +304,32 @@
             // Achsen zum SVG hinzufügen
             achsengruppe.appendChild(xAchse);
             achsengruppe.appendChild(yAchse);
-            zeichneKurve();
         }
-        function zeichneKurve() {
-                let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-
-                // Starte den Pfad mit dem ersten Punkt
-                let d = `M ${allepunktex[0]} ${allepunktey[0]}`;
-
-                // Berechnung der Bézier-Kontrollpunkte
-                for (let i = 1; i < allepunktex.length - 1; i++) {
-                    let xc = (allepunktex[i] + allepunktex[i + 1]) / 2;
-                    let yc = (allepunktey[i] + allepunktey[i + 1]) / 2;
-                    d += ` Q ${allepunktex[i]} ${allepunktey[i]}, ${xc} ${yc}`;
-                }
-
-                // Letzten Punkt hinzufügen
-                d += ` T ${allepunktex[allepunktex.length - 1]} ${allepunktey[allepunktey.length - 1]}`;
-
-                // Attribute setzen und ins SVG einfügen
-                path.setAttribute("d", d);
-                path.setAttribute("stroke", "blue");
-                path.setAttribute("fill", "none");
-                path.setAttribute("stroke-width", "3");
-
-                svgpunkte.appendChild(path);
-            }
 
         eingabefürinputs.addEventListener('change', () => {
             inputserstellen();
             werteberechnung();
             zeichne();
-        });
-
+        }); 
+        function zeichneLinie(){
+            let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            let d = `M ${allepunktex[0]} ${allepunktey[0]}`;
+            console.log(allepunktex);
+            for(let i=1; i<allepunktex.length -1; i++){
+                let xc = (allepunktex[i] + allepunktex[i+1])/2;
+                let yc = (allepunktey[i] + allepunktey[i+1])/2;
+                d += ` Q ${allepunktex[i]} ${allepunktey[i]}, ${xc} ${yc}`;
+            }
+            console.log(d);
+            d += ` T ${allepunktex[allepunktex.length-1]} ${allepunktey[allepunktey.length-1]} `;
+            path.setAttribute("d", d);
+            path.setAttribute("class", "graph");
+            path.setAttribute("fill", "none");
+            path.setAttribute("stroke-width", "3");
+                
+            graphen.appendChild(path);
+            }   
+        //tabelleSetup();
         inputserstellen();
         werteberechnung();
         zeichne();

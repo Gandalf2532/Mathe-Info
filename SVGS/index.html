@@ -116,6 +116,7 @@
         let Beschriftung = document.getElementById("Beschriftung");
         let achsengruppe = document.getElementById("Achsengruppe");
         let eingabefürinputs = document.getElementById("eingabe-werte"); //Mir fallen keine Namen mehr ein
+        let allewertex
 
         function inputserstellen(){  //erstellt die inputs in der x-Reihe. Menge abhängig des Inputfeldes mit der id=eingabe-wert
             if(eingabefürinputs.value <= 2){
@@ -154,28 +155,28 @@
 
         function werteberechnung() {
                 zellen = Array.from(document.getElementById("x-werte").getElementsByTagName("input")); // X-Werte-Inputs holen
-                yReihe.innerHTML = ""; // Y-Reihe leeren
+                yReihe.innerHTML = "";
                 var th = document.createElement("th");
-                th.innerText = "Y-Wert"; // Tabellenkopf setzen
+                th.innerText = "Y-Wert";
                 yReihe.appendChild(th);
 
-                // 1. Werte mit Referenz auf Inputs speichern
+                //Werte mit Referenz auf Inputs speichern
                 let allewertex = zellen.map(input => ({
                     wert: Number(input.value)
                 }));
 
-                // 2. Sortieren nach dem X-Wert
+                //Sortieren nach dem X-Wert
                 allewertex.sort((a, b) => a.wert - b.wert);
 
-                // 3. Sortierte Werte zurück in die Tabelle schreiben
+                //Sortierte Werte zurück in die Tabelle schreiben
                 for (let i = 0; i < allewertex.length; i++) {
-                    zellen[i].value = allewertex[i].wert; // Sortierte Werte setzen
+                    zellen[i].value = allewertex[i].wert;
                 }
 
-                // 4. Y-Werte berechnen und in die Tabelle schreiben
+                //Y-Werte berechnen und in die Tabelle schreiben
                 for (let i = 0; i < allewertex.length; i++) {
                     let xwert = allewertex[i].wert;
-                    let ywert = 0.5 * (xwert ** 2) - 2 * xwert - 4; // Funktionswert berechnen
+                    let ywert = 0.5 * (xwert ** 2) - 2 * xwert - 4;
                     alleYWerte[i] = ywert;
 
                     let td = document.createElement('td');

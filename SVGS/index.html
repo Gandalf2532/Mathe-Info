@@ -84,8 +84,8 @@
     </table>
     <svg id="svg1" viewBox=" 0 0 0 0">
         <defs>
-            <pattern id="grid" class="gitterlinie" patternUnits="userSpaceOnUse" width="50" height="50">
-                <path class="gitterlinie" d="M 50 0 L 0 0 0 50" fill="none"/>
+            <pattern id="grid" class="gitterlinie" patternUnits="userSpaceOnUse" width="25" height="25">
+                <path class="gitterlinie" d="M 25 0 L 0 0 0 25" fill="none"/>
             </pattern>
         </defs>
         <rect class="gitterlinie" width="100%" height="100%" fill="url(#grid)" id="gitterrect"/>
@@ -144,7 +144,7 @@
 
             //eventListener Hinzufügen
             for(let i=0; i<zellen.length; i++){
-                zellen[i].addEventListener('input', () => {
+                zellen[i].addEventListener('change', () => {
                     werteberechnung();
                     zeichne();
                 });
@@ -152,23 +152,39 @@
             werteberechnung();
         }
 
-        function werteberechnung(){ // Soll die Funktionswerte berechnen
-            zellen = Array.from(document.getElementById("x-werte").getElementsByTagName("input")); //Array erstellen. Muss an der Stelle sein, damit die x-Werte schon existieren
-            yReihe.innerHTML = ""; //cleart die y-Reihe
-            var th = document.createElement("th");
-            th.innerText = "Y-Wert"; //schreibt den th neu
-            yReihe.appendChild(th);
-            for (let i = 0; i < zellen.length; i++) { //füllt die tabelle aus
-                var xwert = Number(zellen[i].value);
-                var werte = zellen[i].value;
-                var ywert = 0.5 * (werte ** 2) - 2 * werte - 4;
-                alleYWerte[i] = ywert;
-                var td = document.createElement('td');
-                td.innerText = ywert;
-                funktionswerte[i] = ywert;
-                yReihe.appendChild(td);
+        function werteberechnung() {
+                zellen = Array.from(document.getElementById("x-werte").getElementsByTagName("input")); // X-Werte-Inputs holen
+                yReihe.innerHTML = ""; // Y-Reihe leeren
+                var th = document.createElement("th");
+                th.innerText = "Y-Wert"; // Tabellenkopf setzen
+                yReihe.appendChild(th);
+
+                // 1. Werte mit Referenz auf Inputs speichern
+                let allewertex = zellen.map(input => ({
+                    wert: Number(input.value)
+                }));
+
+                // 2. Sortieren nach dem X-Wert
+                allewertex.sort((a, b) => a.wert - b.wert);
+
+                // 3. Sortierte Werte zurück in die Tabelle schreiben
+                for (let i = 0; i < allewertex.length; i++) {
+                    zellen[i].value = allewertex[i].wert; // Sortierte Werte setzen
+                }
+
+                // 4. Y-Werte berechnen und in die Tabelle schreiben
+                for (let i = 0; i < allewertex.length; i++) {
+                    let xwert = allewertex[i].wert;
+                    let ywert = 0.5 * (xwert ** 2) - 2 * xwert - 4; // Funktionswert berechnen
+                    alleYWerte[i] = ywert;
+
+                    let td = document.createElement('td');
+                    td.innerText = ywert;
+                    funktionswerte[i] = ywert;
+                    yReihe.appendChild(td);
+                }
             }
-        }
+
 
         function zeichne(){
             //alte Sachen clearen
@@ -321,7 +337,7 @@
                 svgpunkte.appendChild(path);
             }
 
-        eingabefürinputs.addEventListener('input', () => {
+        eingabefürinputs.addEventListener('change', () => {
             inputserstellen();
             werteberechnung();
             zeichne();

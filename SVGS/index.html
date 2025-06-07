@@ -152,6 +152,15 @@
             }
             werteberechnung();
         }
+        function funktionzuwertausrechnen(x){
+            return 0.5 * (x ** 2) - 2 * x - 4;
+        }
+        function getallexwerte() {
+            let allewertex = zellen.map(input => ({
+                    wert: Number(input.value)
+                }));
+                return allewertex; // gibt ein Array mit den Werten der Inputs zurück
+        }
 
         function werteberechnung() {
                 zellen = Array.from(document.getElementById("x-werte").getElementsByTagName("input")); // X-Werte-Inputs holen
@@ -161,10 +170,7 @@
                 yReihe.appendChild(th);
 
                 //Werte mit Referenz auf Inputs speichern
-                let allewertex = zellen.map(input => ({
-                    wert: Number(input.value)
-                }));
-
+                allewertex = getallexwerte();
                 //Sortieren nach dem X-Wert
                 allewertex.sort((a, b) => a.wert - b.wert);
 
@@ -176,7 +182,7 @@
                 //Y-Werte berechnen und in die Tabelle schreiben
                 for (let i = 0; i < allewertex.length; i++) {
                     let xwert = allewertex[i].wert;
-                    let ywert = 0.5 * (xwert ** 2) - 2 * xwert - 4;
+                    let ywert = funktionzuwertausrechnen(xwert);
                     alleYWerte[i] = ywert;
 
                     let td = document.createElement('td');
@@ -314,29 +320,43 @@
             zeichneKurve();
         }
         function zeichneKurve() {
-                let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            allewertex = getallexwerte();
 
-                // Starte den Pfad mit dem ersten Punkt
-                let d = `M ${allepunktex[0]} ${allepunktey[0]}`;
+            let imaginärepunktex = [];
+            imaginärepunktex[0] = allewertex[0].wert;
+            let imaginärepunkty = [];
+            while (imaginärepunktex[imaginärepunktex.length - 1] < allewertex[allewertex.length - 1].wert) {
+                let letzterWert = imaginärepunktex[imaginärepunktex.length - 1];
+                let neuerX = letzterWert + 0.001;
+                let neuerY = funktionzuwertausrechnen(neuerX);
 
-                // Berechnung der Bézier-Kontrollpunkte
-                for (let i = 1; i < allepunktex.length - 1; i++) {
-                    let xc = (allepunktex[i] + allepunktex[i + 1]) / 2;
-                    let yc = (allepunktey[i] + allepunktey[i + 1]) / 2;
-                    d += ` Q ${allepunktex[i]} ${allepunktey[i]}, ${xc} ${yc}`;
-                }
-
-                // Letzten Punkt hinzufügen
-                d += ` T ${allepunktex[allepunktex.length - 1]} ${allepunktey[allepunktey.length - 1]}`;
-
-                // Attribute setzen und ins SVG einfügen
-                path.setAttribute("d", d);
-                path.setAttribute("stroke", "blue");
-                path.setAttribute("fill", "none");
-                path.setAttribute("stroke-width", "3");
-
-                svgpunkte.appendChild(path);
+            if (!isNaN(neuerY)) { // Nur gültige Werte hinzufügen
+                imaginärepunktex.push(neuerX);
+                imaginärepunkty.push(neuerY);
+            } else {
+                console.error(`Ungültiger Wert für x=${neuerX}: y=${neuerY}`);
+                break; // Schleife abbrechen, falls ungültige Werte auftreten
             }
+        }
+            const graphen = document.getElementById("graphen");
+            graphen.innerHTML = "";
+
+            // Generate path data using imaginäre Punkte
+            let pathData = `M ${imaginärepunktex[0] * 25} ${-imaginärepunkty[0] * 25} `; // Startpunkt
+            for (let i = 1; i < imaginärepunktex.length; i++) {
+                if (!isNaN(imaginärepunkty[i])) { // Nur gültige Punkte verwenden
+                pathData += `L ${imaginärepunktex[i] * 25} ${-imaginärepunkty[i] * 25} `;
+            }
+        }
+
+            // Create and append the path
+            const pathEl = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            pathEl.setAttribute("d", pathData.trim());
+            pathEl.setAttribute("stroke", "blue");
+            pathEl.setAttribute("fill", "none");
+            pathEl.setAttribute("stroke-width", "2");
+            graphen.appendChild(pathEl);
+        }
 
         eingabefürinputs.addEventListener('change', () => {
             inputserstellen();

@@ -134,7 +134,7 @@
                     input.value = zellen[i].value; 
                 }
                 catch(err){  //wenn alte werte nicht existieren, wird einfach i verwendet
-                    input.value = i - (eingabefürinputs.value-1)/2;  //Werte zu Beginn setzen. -1, weil 0 da ist. Die hälfte der Werte ist positiv, die andere negativ
+                    input.value = Math.round(i - (eingabefürinputs.value-1)/2);  //Werte zu Beginn setzen. -1, weil 0 da ist. Die hälfte der Werte ist positiv, die andere negativ
                 }
                 let td = document.createElement("td");
                 td.appendChild(input);

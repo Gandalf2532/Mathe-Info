@@ -1,0 +1,12 @@
+#svg{
+    background-color: antiquewhite;
+}
+
+line{
+    stroke: black;
+    stroke-width: 1em;
+}
+text{
+    font-size: 2em;
+    color:black;
+}

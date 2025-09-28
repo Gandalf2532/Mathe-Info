@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 <html lang="de">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Document</title>
-    <link href="style.css" rel="stylesheet">
-    <template id="Bruch">
-        <text x="100" y="30">1</text>
-        <line x1="0" y1="100" x2="200" y2="100"></line>
-        <text x="100" y="170">2</text>
-    </template>
-    <template id="test">
-        <h1>Test</h1>
-    </template>
-</head>
-<body id="body">
-
-    <svg width="200" height="200" viewbox="0 0 200 200"id="svg">
+    <link href="style.css" rel="stylesheet" />
+  </head>
+  <body id="body">
+    <svg width="200" height="200" viewBox="0 0 200 200" id="svg"></svg>
+    <svg>
+      <g>
+        <defs id="Bruchdefs">
+            <text x="100" y="40" text-anchor="middle">ZAHLER</text>
+            <line x1="20" y1="100" x2="180" y2="100"></line>
+            <text x="100" y="160" text-anchor="middle">NENNER</text>
+        </defs>
+      </g>
     </svg>
-    
+    <template id="userinputfeld">
+      <input type="number" id="numberinput">
+    </template>
+
     <script src="bruch.js"></script>
     <script src="main.js"></script>
-</body>
+  </body>
 </html>

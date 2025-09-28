@@ -1,12 +1,29 @@
-#svg{
+#svg {
     background-color: antiquewhite;
 }
 
-line{
+line {
     stroke: black;
-    stroke-width: 1em;
+    stroke-width: 2;
 }
-text{
+
+text {
     font-size: 2em;
-    color:black;
+    fill: black;
+    text-anchor: middle;
+    padding:1em;
+    cursor: pointer;
+}
+input[type="number"]{
+    min-width: 10em;
+}
+rect.used{
+    fill:blue;
+    stroke-width: 1;
+    stroke: black;
+}
+rect{
+    fill: white;
+    stroke-width: 1;
+    stroke: black;
 }

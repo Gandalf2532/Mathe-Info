@@ -1,18 +1,13 @@
 const svg = document.getElementById("svg");
-const template = document.getElementById("Bruch");
+const Bruchdefs = document.getElementById("Bruchdefs");
 const body = document.getElementById("body");
+const userinputfeld = document.getElementById("userinputfeld");
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    /*let text = document.createElementNS("http://www.w3.org/2000/svg", "text")
-    text.textContent = "bla"
-    text.setAttribute("x", "100")
-    text.setAttribute("y", "100")
-    svg.appendChild(text)*/
-
-    let Bruch1 = new Bruch(1, 2);
+    let Bruch1 = new Bruch(3, 10);
 
     Bruch1.anzeigen();
+    Bruch1.alsBalkenDarstellen();
 })
 
-body.appendChild(document.getElementById("test").content)

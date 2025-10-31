@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>unfertiger Funktions-Plotter</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <label>Die Anzahl der x-Werte:<input type="number" class="eingabe" id="eingabe-werte" value="10" min="2"></label>
+    <table>
+        <thead>
+            Funktionstabelle
+        </thead>
+        <tr id="x-werte">
+
+        </tr>
+        <tr id="y-Reihe">
+        </tr>
+    </table>
+    <svg id="svg1" viewBox=" 0 0 0 0">
+        <defs>
+            <pattern id="grid" class="gitterlinie" patternUnits="userSpaceOnUse" width="25" height="25">
+                <path class="gitterlinie" d="M 25 0 L 0 0 0 25" fill="none"/>
+            </pattern>
+        </defs>
+        <rect class="gitterlinie" width="100%" height="100%" fill="url(#grid)" id="gitterrect"/>
+        <g id="Achsengruppe">
+        </g>
+        <g id="Beschriftung"></g>
+        <g id="graphen"></g>
+        <g id="Punkte">
+        </g>
+    </svg>
+    <script src="script.js"></script>
+</body>
+</html>

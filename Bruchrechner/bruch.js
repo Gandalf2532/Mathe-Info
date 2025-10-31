@@ -23,6 +23,8 @@ class Bruch {
       bla[0].addEventListener("change", () => {
         this.aendern("zaehler", bla[0].value)
         body.removeChild(bla[0])
+        this.alsBalkenDarstellen();
+        this.alsBalkenDarstellen();
       })
       body.appendChild(clone);
 
@@ -39,17 +41,18 @@ class Bruch {
         body.removeChild(bla[0]);
       });
       body.appendChild(clone);
+      this.alsBalkenDarstellen();
     });
 
     this.gruppe.innerHTML="";
     Elements.forEach(node => this.gruppe.appendChild(node));
 
-    this.alsBalkenDarstellen();
+    let line = Elements.filter(node => node.tagName === "line")
 
+    line[0].setAttribute("x1", this.xposition-40);
+    line[0].setAttribute("x2", this.xposition+40);
   }
-
   aendern(zuaenderndesElement, wert) {
-
     if(wert != null && !isNaN(wert)){
         eval("this." + zuaenderndesElement + "=" + wert);
         this.anzeigen();
@@ -57,36 +60,37 @@ class Bruch {
         alert("Ungültiger Wert, Nur Zahlen sind erlaubt")
     }
   }
-
   kuerzen(kuerzendeZahl){
     this.zaehler = this.zaehler/kuerzendeZahl;
     this.nenner = this.nenner/kuerzendeZahl;
     this.anzeigen();
   }
-
   alsBalkenDarstellen(){
-    let Balken = [];
+    let balken = [];
     if(this.nenner >= this.zaehler){
       for(let i=0; i < this.nenner; i++){
-      let Element = document.createElementNS("http://www.w3.org/2000/svg", "rect")
-      Element.setAttribute("width", 180/this.nenner);
-      Element.setAttribute("height", 20);
-      Element.setAttribute("x", (Element.getAttribute("width")*i)+10)
-      Balken.push(Element)
+      let element = document.createElementNS("http://www.w3.org/2000/svg", "rect")
+      element.setAttribute("width", 180/this.nenner);
+      element.setAttribute("height", 20);
+      element.setAttribute("x", (element.getAttribute("width")*i) + (this.xposition/2))
+      element.setAttribute("y", "180")
+      balken.push(element)
     }
     for(let i=0; i < this.zaehler; i++){
-      Balken[i].setAttribute("class", "used");
+      balken[i].setAttribute("class", "used");
     }
     let group = document.createElementNS("http://www.w3.org/2000/svg", "g");
-    Balken.forEach(rechteck => {
+    balken.forEach(rechteck => {
       group.appendChild(rechteck);
     }
     )
+    let allgroups = Array.from(this.gruppe.getElementsByTagName("g"));
+    allgroups.forEach(node => {
+      this.gruppe.removeChild(node)
+    })
     this.gruppe.appendChild(group)
     }else{
       alert("feature zum Anzeigen von Werten > 1 noch im Aufbau");
     }
-
   }
-
 }

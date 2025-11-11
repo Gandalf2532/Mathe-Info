@@ -1,1 +1,1 @@
-Projekte, die ich in Mateh-Info angefangen habe (und wahrscheinlich niemals vervollständige)
+Projekte, die ich in Mathe-Info angefangen habe (und wahrscheinlich niemals vervollständige)

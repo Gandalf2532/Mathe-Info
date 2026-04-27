@@ -1,0 +1,10 @@
+# Cargo-Build-Artefakte
+target/
+
+# Cargo-Lockfile (für Anwendungen checken, für Bibliotheken oft ignorieren)
+# Cargo.lock
+
+# Editor-spezifische Dateien (optional)
+.idea/
+.vscode/
+*.swp
